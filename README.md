@@ -2,4 +2,4 @@ ITC
 veryfancyapplication
 testcommit
 
-by Iditiot #1 and Idition #2
+by Idiot #1 and Idiot #2
