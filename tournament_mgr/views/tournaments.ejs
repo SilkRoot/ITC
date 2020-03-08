@@ -1,0 +1,49 @@
+<%- include("_header") -%>
+
+<h1>Turnierübersicht (<%= model.length %>)</h1>
+
+<div class="table-responsive-sm">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Turnier</th>
+                <th>Typ</th>
+                <th>Spielerzahl</th>
+                <th>Status</th>
+                <th>Notizen</th>
+                <th class="d-print-none">
+                    <a class="btn btn-sm btn-success" href="/create_tournament">Neues Turnier erstellen</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (const tournament of model) { %>
+                <tr>
+                    <td><%= tournament.Tournament_Name %></td>
+                    <td><%= tournament.Type %></td>
+                    <td><%= tournament.Player_Count %></td>
+                    <td><%= tournament.Status %></td>
+                    <td><%= tournament.Comments %></td>
+                    <td class="d-print-none">
+                        <a class="btn btn-sm btn-success" href="/edit/<%= tournament.Tournament_ID %>">Bearbeiten</a>
+                        <a class="btn btn-sm btn-success" href="/delete/<%= tournament.Tournament_ID %>">Löschen</a>
+                    </td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+
+<!--<ul>
+
+  <% for (const book of model) { %>
+    <li>
+      <%= book.Title %>
+      <em>(<%= book.Author %>)</em>
+    </li>
+  <% } %>
+
+</ul>-->
+
+<%- include("_footer") -%>

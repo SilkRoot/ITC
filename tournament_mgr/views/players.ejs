@@ -1,0 +1,41 @@
+<%- include("_header") -%>
+
+<h1>Spielerübersicht (<%= model.length %>)</h1>
+
+<div class="table-responsive-sm">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Spielername</th>
+                <th class="d-print-none">
+                    <a class="btn btn-sm btn-success" href="/createplayer">Neuen Spieler anlegen</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (const player of model) { %>
+                <tr>
+                    <td><%= player.Player_Name %></td>
+                    <td class="d-print-none">
+                        <a class="btn btn-sm btn-success" href="/edit/<%= player.Player_ID %>">Bearbeiten</a>
+                        <a class="btn btn-sm btn-success" href="/delete/<%= player.Player_ID %>">Löschen</a>
+                    </td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+
+<!--<ul>
+
+  <% for (const book of model) { %>
+    <li>
+      <%= book.Title %>
+      <em>(<%= book.Author %>)</em>
+    </li>
+  <% } %>
+
+</ul>-->
+
+<%- include("_footer") -%>
