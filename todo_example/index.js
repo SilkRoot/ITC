@@ -1,13 +1,15 @@
+/* derived from https://blog.pagesd.info/2019/10/08/crud-with-express-sqlite-10-steps/ */
+
 const express = require("express");
 const path = require("path");
 
 const sqlite3 = require("sqlite3").verbose();
-const db_name = path.join(__dirname, "data", "apptest.db");
+const db_name = path.join(__dirname, "data", "apptest2.db");
 const db = new sqlite3.Database(db_name, err => {
   if (err) {
     return console.error(err.message);
   }
-  console.log("Successful connection to the database 'apptest.db'");
+  console.log("Successful connection to the database 'apptest2.db'");
 });
 
 const sql_create = `CREATE TABLE IF NOT EXISTS Books (
@@ -120,3 +122,24 @@ app.post("/create", (req, res) => {
       res.redirect("/books");
     });
   });
+
+  // GET /delete/5
+app.get("/delete/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "SELECT * FROM Books WHERE Book_ID = ?";
+  db.get(sql, id, (err, row) => {
+    // if (err) ...
+    res.render("delete", { model: row });
+  });
+});
+
+
+// POST /delete/5
+app.post("/delete/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "DELETE FROM Books WHERE Book_ID = ?";
+  db.run(sql, id, err => {
+    // if (err) ...
+    res.redirect("/books");
+  });
+});
