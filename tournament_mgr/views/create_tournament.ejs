@@ -6,6 +6,19 @@
   <div class="form-horizontal">
 
     <%- include("_editor_tournaments") -%>
+    <div>
+        <h2>Spieler auswählen</h2>
+        <fieldset>
+            <ul>
+                <%= console.log(model) %>
+                <% for (const player of model) { %>
+                        <input type="checkbox" id=<%= player.Player_ID %> value=<%= player.Player_ID %> name=<%= player.Player_ID %>>
+                        <label class="col-form-label col-sm-2" for=<%= player.Player_ID %> ><%= player.Player_Name %></label>
+                        <br>
+                <% } %>
+            </ul>
+        </fieldset>
+    </div>
 
     <div class="form-group row">
       <label class="col-form-label col-sm-2"></label>
@@ -16,5 +29,8 @@
     </div>
   </div>
 </form>
+
+
+      
 
 <%- include("_footer") -%>

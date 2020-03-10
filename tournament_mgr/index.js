@@ -149,20 +149,36 @@ app.get("/about", (req, res) => {
 // = Advanced Routes = //
 
 app.get("/create_tournament", (req, res) => {
-    const tournament = {
-        //default values for new tournament
-    }
-    res.render("create_tournament", { model: tournament });
+    const sql = "SELECT * FROM players"
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.render("create_tournament", {model: rows});
+    });
 });
 
   // POST /create
 app.post("/create_tournament", (req, res) => {
-    const sql = "INSERT INTO Tournaments (Tournament_Name, Type, Status, Comments) VALUES (?, ?, ?, ?)";
+    console.log("post zum Erstellen von Tournament abgesetzt");
+   /* const sql_tournaments = "INSERT INTO Tournaments (Tournament_Name, Player_Count, Type, Status, Comments) VALUES (?, ?, ?, ?, ?)";
+    const tournament = [req.body.Tournament_Name, 3, req.body.Type, req.body.Status, req.body.Comments];
+    db.run(sql_tournaments, tournament, err => {
+        if (err) {
+            return console.error(err.message);
+        }
+    });*/
+    console.log('body : ' + req.body['1', '2', '3', '4', '5']);
+    console.log("test: " + res.json(req.body) );
+/*    if(req.body.checked) {
+        console.log('checked : ' + req.body.checked);
+      }*/
+
+  /*  const sql_tournaments = "INSERT INTO Map_Players_Tournaments (Player_ID, Tournament_ID) VALUES (?, ?)";
     const tournament = [req.body.Tournament_Name, req.body.Type, req.body.Status, req.body.Comments];
     db.run(sql, tournament, err => {
         if (err) {
             return console.error(err.message);
         }
-        res.redirect("/tournaments");
-    });
+    });*/
 });
