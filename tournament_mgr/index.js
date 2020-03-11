@@ -148,28 +148,93 @@ app.get("/about", (req, res) => {
 
 // = Advanced Routes = //
 
-app.get("/create_tournament", (req, res) => {
-    const sql = "SELECT * FROM players"
+/*app.get("/create_tournament", (req, res) => {
+    const sql = "SELECT p.Player_ID, p.Player_Name, MAX(t.Tournament_ID) as Tournament_ID FROM players p, Tournaments t GROUP BY p.Player_ID, p.Player_Name"
     db.all(sql, [], (err, rows) => {
         if (err) {
             return console.error(err.message);
         }
         res.render("create_tournament", {model: rows});
     });
+});*/
+
+app.get("/create_tournament", (req, res) => {
+    const sql = "SELECT MAX(t.Tournament_ID) as Tournament_ID FROM Tournaments t"
+    db.get(sql, [], (err, row) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        const redirect_route = '/edit_tournament/' + row.Tournament_ID
+        console.log("Redirect URL with max Tournament ID: " + redirect_route);
+        res.redirect(redirect_route);
+    });
 });
 
-  // POST /create
-app.post("/create_tournament", (req, res) => {
+app.get("/edit_tournament/:id", (req, res) => {
+    const sql = "SELECT p.Player_ID, p.Player_Name, MAX(t.Tournament_ID) as Tournament_ID FROM players p, Tournaments t GROUP BY p.Player_ID, p.Player_Name"
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.render("edit_tournament", {model: rows});
+    });
+});
+/*
+app.get("/edit_tournament/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "SELECT * FROM Tournaments WHERE Tournament_ID = ?";
+    db.get(sql, id, (err, row) => {
+        if (err) {
+            return console.error(err.message);
+        }
+      res.render("edit_tournament", { model: row });
+    });
+  });
+*/
+
+// POST /edit/5
+app.post("/edit_tournament/:id", (req, res) => {
+    console.log("post edit_tournament aufgerufen");
+    const id = req.params.id;
     console.log("post zum Erstellen von Tournament abgesetzt");
-   /* const sql_tournaments = "INSERT INTO Tournaments (Tournament_Name, Player_Count, Type, Status, Comments) VALUES (?, ?, ?, ?, ?)";
-    const tournament = [req.body.Tournament_Name, 3, req.body.Type, req.body.Status, req.body.Comments];
+    const sql_tournaments = "INSERT OR REPLACE INTO Tournaments (Tournament_Name, Player_Count, Type, Status, Comments) VALUES (?, ?, ?, ?, ?)";
+    const tournament = [id, req.body.Tournament_Name, 3, req.body.Type, req.body.Status, req.body.Comments];
     db.run(sql_tournaments, tournament, err => {
         if (err) {
             return console.error(err.message);
         }
-    });*/
-    console.log('body : ' + req.body['1', '2', '3', '4', '5']);
-    console.log("test: " + res.json(req.body) );
+    });
+    console.log("Tournament erstellt oder geupdated");
+    console.log("post zum Mapping von Tournament nach Spieler abgesetzt");
+    const spieler = req.body['spieler'];
+    console.log ("Spieler array: " + spieler);
+    for (const player in spieler){
+        console.log ("player" + player);
+        const sql = "INSERT OR REPLACE INTO Map_Players_Tournaments (Player_ID, Tournament_ID) VALUES (?, ?)";
+        const map_players_tournaments = [player, id];
+        db.run(sql, map_players_tournaments, err => {
+            if (err) {
+                return console.error(err.message);
+            }
+        });
+    }
+    res.redirect("/tournaments");
+  });
+
+
+
+  // POST /create
+/*
+app.post("/create_tournament", (req, res) => {
+    console.log("post zum Erstellen von Tournament abgesetzt");
+    const sql_tournaments = "INSERT INTO Tournaments (Tournament_Name, Player_Count, Type, Status, Comments) VALUES (?, ?, ?, ?, ?)";
+    const tournament = [req.body.Tournament_ID, req.body.Tournament_Name, 3, req.body.Type, req.body.Status, req.body.Comments];
+    db.run(sql_tournaments, tournament, err => {
+        if (err) {
+            return console.error(err.message);
+        }
+    });
+    console.log('spieler : ' + req.body['spieler']);*/
 /*    if(req.body.checked) {
         console.log('checked : ' + req.body.checked);
       }*/
@@ -181,4 +246,4 @@ app.post("/create_tournament", (req, res) => {
             return console.error(err.message);
         }
     });*/
-});
+//});
